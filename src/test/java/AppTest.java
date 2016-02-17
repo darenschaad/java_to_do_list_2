@@ -22,12 +22,13 @@ public class AppTest extends FluentTest {
   @Test
   public void rootTest() {
       goTo("http://localhost:4567/");
-      assertThat(pageSource()).contains("Add a new task:");
+      assertThat(pageSource()).contains("Add a new task");
   }
 
   @Test
   public void taskIsCreated() {
     goTo("http://localhost:4567/");
+    click("a", withText("Add a new task"));
     fill("#description").with("Do the homework");
     submit(".btn");
     assertThat(pageSource()).contains("Your task has been saved.");
@@ -35,23 +36,23 @@ public class AppTest extends FluentTest {
 
   @Test
   public void taskIsDisplayedTest() {
-    goTo("http://localhost:4567");
+    goTo("http://localhost:4567/tasks/new");;
     fill("#description").with("Do the exercise");
     submit(".btn");
-    click("a");
+    click("a", withText("Go Back"));
     assertThat(pageSource()).contains("Do the exercise");
   }
 
   @Test
   public void multipleTasksAreDisplayedTest() {
-    goTo("http://localhost:4567");
-    fill("#description").with("Do the exercise");
+    goTo("http://localhost:4567/tasks/new");
+    fill("#description").with("Mow the lawn");
     submit(".btn");
-    click("a");
-    fill("#description").with("Do the dishes");
+    goTo("http://localhost:4567/tasks/new");
+    fill("#description").with("Buy groceries");
     submit(".btn");
-    click("a");
-    assertThat(pageSource()).contains("Do the exercise");
-    assertThat(pageSource()).contains("Do the dishes");
+    click("a", withText("Go Back"));
+    assertThat(pageSource()).contains("Mow the lawn");
+    assertThat(pageSource()).contains("Buy groceries");
   }
 }
