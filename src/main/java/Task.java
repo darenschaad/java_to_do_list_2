@@ -7,6 +7,7 @@ public class Task {
   private String mDescription;
   private boolean mCompleted;
   private LocalDateTime mCreatedAt;
+  private int mId;
 
 
   public Task(String description) {
@@ -14,6 +15,7 @@ public class Task {
     mCompleted = false;
     mCreatedAt = LocalDateTime.now();
     instances.add(this);
+    mId = instances.size();
   }
 
   public String getDescription() {
@@ -33,6 +35,19 @@ public class Task {
 
   public static void clear() {
     instances.clear();
+  }
+
+  public int getId() {
+    return mId;
+  }
+
+  public static Task find(int id) {
+    try {
+      return instances.get(id -1);
+    }
+    catch (IndexOutOfBoundsException e) {
+      return null;
+    }
   }
 
 }
